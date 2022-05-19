@@ -1,49 +1,40 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { wrap } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/mysql';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Injectable } from '@nestjs/common';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 
-const coffees: Coffee[] = [
-  {
-    id: '1',
-    name: 'coffee 1',
-    flavors: ['x', 'y'],
-  },
-  {
-    id: '2',
-    name: 'coffee 2',
-    flavors: ['x', 'y'],
-  },
-];
-
 @Injectable()
 export class CoffeesService {
+  constructor(
+    @InjectRepository(Coffee)
+    private readonly coffeeRepository: EntityRepository<Coffee>,
+  ) {}
+
   findAll() {
-    return coffees;
-  }
-
-  findOne(id: string) {
-    return coffees.find((coffee) => coffee.id === id);
-  }
-
-  update(id: string, UpdateCoffeeDto: UpdateCoffeeDto) {
-    const index = coffees.findIndex((coffee) => coffee.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`${id} not found`)
-    }
-
-    coffees.splice(index, 1, {
-      ...coffees[index],
-      ...UpdateCoffeeDto,
+    return this.coffeeRepository.findAll({
+      // populate: ['flavors'],
     });
   }
 
-  create(dto: CreateCoffeeDto) {
-    const coffee: Coffee = {
-      id: String(coffees.length),
-      ...dto,
-    };
-    coffees.push(coffee);
+  findOne(id: number) {
+    return this.coffeeRepository.findOneOrFail({
+      id,
+    });
+  }
+
+  async update(id: number, updateCoffeeDto: UpdateCoffeeDto) {
+    const coffee = await this.coffeeRepository.findOneOrFail({ id });
+    wrap(coffee).assign({
+      name: updateCoffeeDto.name,
+    });
+    this.coffeeRepository.persistAndFlush(coffee);
     return coffee;
+  }
+
+  create(dto: CreateCoffeeDto) {
+    return null;
   }
 }
