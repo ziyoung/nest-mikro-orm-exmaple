@@ -12,6 +12,7 @@ export class Coffee extends BaseEntity {
 
   @ManyToMany(() => Flavor, (flavor) => flavor.coffees, {
     owner: true,
+    eager: true, // 默认加载 relation，不然需要
   })
   flavors = new Collection<Flavor>(this);
 }

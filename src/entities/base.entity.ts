@@ -4,9 +4,10 @@ export class BaseEntity {
   @PrimaryKey()
   id: number;
 
-  @Property({ name: 'created_time' })
+  @Property({ name: 'created_time', nullable: true })
   createdTime: Date;
 
-  @Property({ name: 'updated_time' })
+  // @Option
+  @Property({ name: 'updated_time', default: '' })
   updatedTime: Date;
 }

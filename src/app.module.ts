@@ -17,6 +17,7 @@ import { CoffeesModule } from './coffees/coffees.module';
       user: 'root',
       password: '12345',
       debug: true,
+      validateRequired: false, // https://mikro-orm.io/docs/upgrading-v4-to-v5#required-properties-are-validated-before-insert
       // port: 3306,
     }),
   ],

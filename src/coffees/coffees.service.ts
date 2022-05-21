@@ -1,4 +1,3 @@
-import { wrap } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/mysql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
@@ -14,27 +13,42 @@ export class CoffeesService {
   ) {}
 
   findAll() {
-    return this.coffeeRepository.findAll({
-      // populate: ['flavors'],
-    });
+    return this.coffeeRepository.findAll();
   }
 
   findOne(id: number) {
-    return this.coffeeRepository.findOneOrFail({
+    return this.coffeeRepository.findOne({
+      id,
+    });
+  }
+
+  remove(id: number) {
+    return this.coffeeRepository.remove({
       id,
     });
   }
 
   async update(id: number, updateCoffeeDto: UpdateCoffeeDto) {
     const coffee = await this.coffeeRepository.findOneOrFail({ id });
-    wrap(coffee).assign({
-      name: updateCoffeeDto.name,
-    });
-    this.coffeeRepository.persistAndFlush(coffee);
+    this.coffeeRepository.assign(coffee, updateCoffeeDto);
+    // wrap(coffee).assign({
+    //   ...updateCoffeeDto
+    //   // name: updateCoffeeDto.name,
+    // });
+    await this.coffeeRepository.persistAndFlush(coffee);
     return coffee;
   }
 
-  create(dto: CreateCoffeeDto) {
-    return null;
+  async create(dto: CreateCoffeeDto) {
+    const c = this.coffeeRepository.create(dto);
+    await this.coffeeRepository.persistAndFlush(c);
+    return c;
+  }
+
+  async create2(dto: CreateCoffeeDto) {
+    const coffee = new Coffee();
+    this.coffeeRepository.assign(coffee, dto);
+    await this.coffeeRepository.persistAndFlush(coffee);
+    return coffee;
   }
 }

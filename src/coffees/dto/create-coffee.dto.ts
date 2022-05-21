@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateCoffeeDto {
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   readonly name: string;
 
   @IsString()
