@@ -1,5 +1,5 @@
 import { Collection, Entity, ManyToMany, Property } from '@mikro-orm/core';
-import { BaseEntity } from 'src/entities/base.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 import { Flavor } from './flavor.entity.ts';
 
 @Entity()

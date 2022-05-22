@@ -9,6 +9,12 @@ async function bootstrap() {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
+      transformOptions: {
+        // https://www.npmjs.com/package/class-transformer#implicit-type-conversion
+        // query 中的字段都是 string，配置该属性完成自动的转换
+        // 对于嵌套数据，还是得使用 @Type(() => Class)
+        enableImplicitConversion: true,
+      },
     }),
   );
   await app.listen(3100);

@@ -1,6 +1,9 @@
+import { ObjectQuery } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/mysql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { PaginatedResult } from 'src/common/paginated-result';
+import { CoffeePaginationQueryDto } from './dto/coffee-pagination-query.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
@@ -12,8 +15,20 @@ export class CoffeesService {
     private readonly coffeeRepository: EntityRepository<Coffee>,
   ) {}
 
-  findAll() {
-    return this.coffeeRepository.findAll();
+  async findAll(paginationQueryDto: CoffeePaginationQueryDto) {
+    const { keyword, realSize, realOffset } = paginationQueryDto;
+    const filter: ObjectQuery<Coffee> | undefined = keyword
+      ? {
+          name: {
+            $like: keyword,
+          },
+        }
+      : undefined;
+    const [coffees, count] = await this.coffeeRepository.findAndCount(filter, {
+      limit: realSize,
+      offset: realOffset,
+    });
+    return PaginatedResult.create(coffees, count, paginationQueryDto);
   }
 
   findOne(id: number) {

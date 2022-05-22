@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
+import { CoffeePaginationQueryDto } from './dto/coffee-pagination-query.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
@@ -16,8 +18,8 @@ export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
   @Get()
-  findAll() {
-    return this.coffeesService.findAll();
+  findAll(@Query() paginationQueryDto: CoffeePaginationQueryDto) {
+    return this.coffeesService.findAll(paginationQueryDto);
   }
 
   @Get(':id')
@@ -31,7 +33,6 @@ export class CoffeesController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    console.log('dto', updateCoffeeDto, typeof updateCoffeeDto);
     return this.coffeesService.update(id, updateCoffeeDto);
   }
 

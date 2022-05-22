@@ -8,9 +8,9 @@ import { CoffeesModule } from './coffees/coffees.module';
   imports: [
     CoffeesModule,
     MikroOrmModule.forRoot({
-      // entities: ['./dist/**/entities'],
-      // entitiesTs: ['./src/**/entities'],
-      autoLoadEntities: true,
+      entities: ['./dist/**/entities/*.js'],
+      entitiesTs: ['./src/**/entities/*.ts'],
+      // autoLoadEntities: true,
       dbName: 'coffeebar',
       type: 'mysql',
       // host: 'localhost',
