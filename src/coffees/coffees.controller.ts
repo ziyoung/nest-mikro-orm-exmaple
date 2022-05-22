@@ -1,8 +1,8 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -24,11 +24,7 @@ export class CoffeesController {
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    const coffee = await this.coffeesService.findOne(id);
-    if (!coffee) {
-      throw new NotFoundException(`can't find coffee by id ${id}`);
-    }
-    return coffee;
+    return this.coffeesService.mustFindOne(id);
   }
 
   @Patch(':id')
@@ -41,8 +37,8 @@ export class CoffeesController {
     return this.coffeesService.create(createCoffeeDto);
   }
 
-  @Post('/create2')
-  create2(@Body() createCoffeeDto: CreateCoffeeDto) {
-    return this.coffeesService.create2(createCoffeeDto);
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    return this.coffeesService.remove(id);
   }
 }

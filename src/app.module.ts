@@ -14,11 +14,13 @@ import { CoffeesModule } from './coffees/coffees.module';
       dbName: 'coffeebar',
       type: 'mysql',
       // host: 'localhost',
+      // port: 3306,
       user: 'root',
       password: '12345',
+      // TODO: 从配置中获取
       debug: true,
-      validateRequired: false, // https://mikro-orm.io/docs/upgrading-v4-to-v5#required-properties-are-validated-before-insert
-      // port: 3306,
+      // https://mikro-orm.io/docs/upgrading-v4-to-v5#required-properties-are-validated-before-insert
+      validateRequired: false,
     }),
   ],
   controllers: [AppController],
