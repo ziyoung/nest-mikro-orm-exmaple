@@ -1,3 +1,4 @@
+import { Connection } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CoffeesController } from './coffees.controller';

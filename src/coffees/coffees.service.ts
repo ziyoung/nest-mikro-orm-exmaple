@@ -1,7 +1,7 @@
 import { ObjectQuery } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/mysql';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginatedResult } from 'src/common/paginated-result';
 import { CoffeePaginationQueryDto } from './dto/coffee-pagination-query.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
