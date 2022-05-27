@@ -1,15 +1,15 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { setTimeout } from 'timers/promises';
-import { STATUS_TEXT } from './config.constants';
-import { ConfigService } from './config.service';
-import { ConfigController } from './config.controller';
+import { STATUS_TEXT } from './cowsay.constants';
+import { CowsayService } from './cowsay.service';
+import { CowsayController } from './cowsay.controller';
 
 @Module({})
-export class ConfigModule {
+export class CowsayModule {
   static register(message: string): DynamicModule {
     return {
-      module: ConfigModule,
-      controllers: [ConfigController],
+      module: CowsayModule,
+      controllers: [CowsayController],
       providers: [
         {
           provide: STATUS_TEXT,
@@ -19,9 +19,9 @@ export class ConfigModule {
             return ['passed', message];
           },
         },
-        ConfigService,
+        CowsayService,
       ],
-      exports: [ConfigService],
+      exports: [CowsayService],
     };
   }
 }

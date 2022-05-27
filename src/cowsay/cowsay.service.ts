@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { STATUS_TEXT } from './config.constants';
+import { STATUS_TEXT } from './cowsay.constants';
 
 @Injectable()
-export class ConfigService {
+export class CowsayService {
   constructor(@Inject(STATUS_TEXT) private texts: string[]) {}
 
   cowsay() {

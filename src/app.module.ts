@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
-import { ConfigModule } from './config/config.module';
-import { ConfigService } from './config/config.service';
+import { CowsayModule } from './cowsay/cowsay.module';
+import { CowsayService } from './cowsay/cowsay.service';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { ConfigService } from './config/config.service';
       // https://mikro-orm.io/docs/upgrading-v4-to-v5#required-properties-are-validated-before-insert
       validateRequired: false,
     }),
-    ConfigModule.register(`{"status": "ok"}`),
+    CowsayModule.register(`{"status": "ok"}`),
   ],
   controllers: [AppController],
   providers: [AppService],
