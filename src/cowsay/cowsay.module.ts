@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Module, Scope } from '@nestjs/common';
 import { setTimeout } from 'timers/promises';
 import { STATUS_TEXT } from './cowsay.constants';
 import { CowsayService } from './cowsay.service';
