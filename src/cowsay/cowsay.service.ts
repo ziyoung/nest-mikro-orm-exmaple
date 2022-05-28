@@ -1,4 +1,5 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
+import cowsayConfig, { CowsayConfigType } from './cowsay.config';
 import { STATUS_TEXT } from './cowsay.constants';
 
 /**
@@ -10,12 +11,25 @@ import { STATUS_TEXT } from './cowsay.constants';
   scope: Scope.DEFAULT,
 })
 export class CowsayService {
-  constructor(@Inject(STATUS_TEXT) private texts: string[]) {
-    console.log('cowsay service constructor');
-  }
+  constructor(
+    @Inject(STATUS_TEXT) private texts: string[],
+    @Inject(cowsayConfig.KEY) private config: CowsayConfigType,
+  ) {}
 
   cowsay() {
-    // return 'cowsay'
-    return this.texts.join('====');
+    return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>text: ${this.texts.join('\t===\t')}</div>
+  <div>partial: hello is ${this.config.hello}</div>
+  </body>
+</html>`;
   }
 }
