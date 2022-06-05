@@ -1,11 +1,12 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { CowsayModule } from './cowsay/cowsay.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration, { extraConfig } from './config/configuration';
+import { AccessLogMiddleware } from './common/middleware/access-log.middleware';
 
 @Module({
   imports: [
@@ -34,4 +35,8 @@ import configuration, { extraConfig } from './config/configuration';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AccessLogMiddleware).forRoutes('*');
+  }
+}
