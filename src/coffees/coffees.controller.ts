@@ -7,12 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { AccessLogInterceptor } from 'src/common/interceptor/access-log.interceptor';
 import { CoffeesService } from './coffees.service';
 import { CoffeePaginationQueryDto } from './dto/coffee-pagination-query.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
+@UseInterceptors(AccessLogInterceptor)
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
