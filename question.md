@@ -20,6 +20,13 @@ ExceptionsHandler 的配置。对于一些异常，响应是 500。
 
 https://mikro-orm.io/docs/upgrading-v4-to-v5#required-properties-are-validated-before-insert
 
+`validateRequired` 属性设置为 true
+
+## Mikro ORM 中的 relation
+
+重点关注 `@ManyToMany` 中的 `eager` 与 `populate` 的配置。
+
+
 ## ORM 中的 transaction
 
 
