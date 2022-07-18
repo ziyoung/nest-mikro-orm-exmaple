@@ -20,6 +20,7 @@ import { AccessLogMiddleware } from './common/middleware/access-log.middleware';
       entitiesTs: ['./src/**/entities/*.ts'],
       // autoLoadEntities: true,
       type: 'mysql',
+      logger: null,
       dbName: process.env.DB_NAME,
       // host: 'localhost',
       // port: 3306,

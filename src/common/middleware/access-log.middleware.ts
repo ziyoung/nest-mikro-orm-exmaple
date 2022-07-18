@@ -13,11 +13,9 @@ function format(data: Record<string, any>) {
 @Injectable()
 export class AccessLogMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log('=== in middleware 1 ===');
     const start = performance.now();
     // next -> 调用之后，执行 middleware guard
     next();
-    console.log('=== in middleware 2 ===');
     // 这里要调整：使用 filter 是不是更合适
     res.on('close', () => {
       const latency = ((performance.now() - start) / 1000).toFixed(2);

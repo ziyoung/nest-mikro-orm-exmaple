@@ -1,5 +1,7 @@
 # 待解决的疑问点
 
+https://github.com/goldbergyoni/nodebestpractices
+
 ## error 信息展示到响应中
 
 ExceptionsHandler 的配置。对于一些异常，响应是 500。
