@@ -1,5 +1,6 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { performance } from 'perf_hooks';
 
 function format(data: Record<string, any>) {
@@ -12,6 +13,10 @@ function format(data: Record<string, any>) {
 
 @Injectable()
 export class AccessLogMiddleware implements NestMiddleware {
+  constructor(@InjectPinoLogger(AccessLogMiddleware.name) private readonly logger: PinoLogger) {
+  }
+
+
   use(req: Request, res: Response, next: NextFunction) {
     const start = performance.now();
     // next -> 调用之后，执行 middleware guard
@@ -28,11 +33,12 @@ export class AccessLogMiddleware implements NestMiddleware {
         url: req.originalUrl,
         userAgent: req.get('User-Agent'),
       };
-      const message = format(data);
+      // const message = format(data);
+      this.logger.assign(data);
       if (code >= 400) {
-        Logger.warn(message, 'AccessLog Warn Middleware');
+        this.logger.warn('AccessLog Warn Interceptor');
       } else {
-        Logger.log(message, 'AccessLog Info Middleware');
+        this.logger.info('AccessLog Info Interceptor');
       }
     });
   }

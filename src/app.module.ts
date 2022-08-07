@@ -7,6 +7,7 @@ import { CowsayModule } from './cowsay/cowsay.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration, { extraConfig } from './config/configuration';
 import { AccessLogMiddleware } from './common/middleware/access-log.middleware';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -14,13 +15,13 @@ import { AccessLogMiddleware } from './common/middleware/access-log.middleware';
       isGlobal: true,
       load: [configuration, extraConfig],
     }),
-    CoffeesModule,
+    LoggerModule.forRoot(),
     MikroOrmModule.forRoot({
       entities: ['./dist/**/entities/*.js'],
       entitiesTs: ['./src/**/entities/*.ts'],
       // autoLoadEntities: true,
       type: 'mysql',
-      logger: null,
+      // logger: null,
       dbName: process.env.DB_NAME,
       // host: 'localhost',
       // port: 3306,
@@ -32,6 +33,8 @@ import { AccessLogMiddleware } from './common/middleware/access-log.middleware';
       validateRequired: false,
     }),
     CowsayModule.register(`{"status": "ok"}`),
+    // MikroOrmModuleWrap.register(),
+    CoffeesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

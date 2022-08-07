@@ -2,15 +2,18 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
-  Logger,
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { performance } from 'perf_hooks';
 import { Request, Response } from 'express';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class AccessLogInterceptor implements NestInterceptor {
+  constructor(@InjectPinoLogger(AccessLogInterceptor.name) private readonly logger: PinoLogger) {
+  }
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const host = context.switchToHttp();
     const req = host.getRequest<Request>();
@@ -28,11 +31,11 @@ export class AccessLogInterceptor implements NestInterceptor {
           url: req.originalUrl,
           userAgent: req.get('User-Agent'),
         };
-        const message = format(data);
+        this.logger.assign(data);
         if (code >= 400) {
-          Logger.warn(message, 'AccessLog Warn Interceptor');
+          this.logger.warn('AccessLog Warn Interceptor');
         } else {
-          Logger.log(message, 'AccessLog Info Interceptor');
+          this.logger.info('AccessLog Info Interceptor');
         }
       }),
     );
