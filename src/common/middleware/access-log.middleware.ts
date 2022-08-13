@@ -3,19 +3,12 @@ import { Request, Response, NextFunction } from 'express';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { performance } from 'perf_hooks';
 
-function format(data: Record<string, any>) {
-  let chunk: string[] = [];
-  for (const [key, value] of Object.entries(data)) {
-    chunk.push(`${key}=${value}`);
-  }
-  return chunk.join(' ');
-}
-
 @Injectable()
 export class AccessLogMiddleware implements NestMiddleware {
-  constructor(@InjectPinoLogger(AccessLogMiddleware.name) private readonly logger: PinoLogger) {
-  }
-
+  constructor(
+    @InjectPinoLogger(AccessLogMiddleware.name)
+    private readonly logger: PinoLogger,
+  ) {}
 
   use(req: Request, res: Response, next: NextFunction) {
     const start = performance.now();
@@ -28,17 +21,16 @@ export class AccessLogMiddleware implements NestMiddleware {
       const data = {
         code,
         latency,
-        method: req.method,
-        ip: req.ip,
-        url: req.originalUrl,
-        userAgent: req.get('User-Agent'),
+        // method: req.method,
+        // ip: req.ip,
+        // url: req.originalUrl,
+        // userAgent: req.get('User-Agent'),
       };
-      // const message = format(data);
       this.logger.assign(data);
       if (code >= 400) {
-        this.logger.warn('AccessLog Warn Interceptor');
+        this.logger.warn('AccessLog Warn Middleware');
       } else {
-        this.logger.info('AccessLog Info Interceptor');
+        this.logger.info('AccessLog Info Middleware');
       }
     });
   }
