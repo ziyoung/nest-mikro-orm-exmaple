@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import { IsOptional, IsPositive } from 'class-validator';
 
 const defaultSize = 10;
