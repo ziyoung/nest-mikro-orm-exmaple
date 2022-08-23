@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration, { extraConfig } from './config/configuration';
 import { AccessLogMiddleware } from './common/middleware/access-log.middleware';
 import { LoggerModule } from 'nestjs-pino';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { LoggerModule } from 'nestjs-pino';
     CowsayModule.register(`{"status": "ok"}`),
     // MikroOrmModuleWrap.register(),
     CoffeesModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
